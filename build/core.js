@@ -1,0 +1,312 @@
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ejs = require('ejs');
+var chalk = require('chalk');
+var glob = require('glob');
+var inflect = require('inflect');
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+
+// Yeoman Libraries
+var TerminalAdapter = require('../conflicter/adapter.js');
+var Conflicter = require('../conflicter/conflicter.js');
+
+var config = {
+  domainIndex: 'domains/index.js',
+  domainDirectory: 'domains',
+  generatorDirectory: 'generators'
+};
+
+var inspect = JSON.stringify;
+
+//let domainsPath = path.join(__dirname, config.domainIndex);
+//let domains = require(domainsPath);
+var domains = {};
+
+var GenerateCore = (function () {
+  function GenerateCore(_ref) {
+    var templatePath = _ref.templatePath;
+    var shouldForce = _ref.shouldForce;
+
+    _classCallCheck(this, GenerateCore);
+
+    this.templatePath = templatePath;
+    this.inflect = inflect;
+    this.config = config;
+    this.domains = domains;
+    this.terminal = new TerminalAdapter();
+    this.conflicter = new Conflicter(this.terminal, shouldForce);
+    this.isReady = false;
+    this.jobs = [];
+  }
+
+  /**
+   * Copy file from template to application
+   * the answer(s) to the provided callback.
+   *
+   * @param {src} path relative to template folder
+   * @param {dest} path relative to application root
+   */
+
+  _createClass(GenerateCore, [{
+    key: 'file',
+    value: function file(src, dest) {
+      this.assertReady("file()");
+      var job = 'file';
+      this.jobs.push({ job: job, src: src, dest: dest });
+    }
+
+    /**
+     * Render EJS template and copy into application
+     *
+     * @param {src} path relative to template folder
+     * @param {dest} path relative to application root
+     */
+
+  }, {
+    key: 'template',
+    value: function template(src, dest) {
+      this.assertReady("template()");
+      var job = 'template';
+      this.jobs.push({ job: job, src: src, dest: dest });
+    }
+
+    /**
+     * If destination does not exist render EJS template and copy into dest
+     *
+     * @param {src} path relative to template folder
+     * @param {dest} path relative to application root
+     */
+
+  }, {
+    key: 'assureTemplate',
+    value: function assureTemplate(src, dest) {
+      this.assertReady("assureTemplate()");
+      var job = 'assureTemplate';
+      this.jobs.push({ job: job, src: src, dest: dest });
+    }
+
+    /**
+     * Inject import statement into dest file
+     *
+     * @param {_import}
+     * @param {_from}
+     */
+
+  }, {
+    key: 'injectImport',
+    value: function injectImport(statement, dest) {
+      this.assertReady("file()");
+      var job = 'injectImport';
+      this.jobs.push({ job: job, statement: statement, dest: dest });
+    }
+
+    /**
+     * Inject code into file at dest using contents
+     * from template
+     *
+     * @param {marker} delimeter 2
+     * @param {src} path relative to template folder
+     * @param {dest} path relative to application root
+     */
+
+  }, {
+    key: 'inject',
+    value: function inject(marker, src, dest) {
+      this.assertReady("inject()");
+      var job = 'inject';
+      this.jobs.push({ job: job, marker: marker, src: src, dest: dest });
+    }
+
+    // PRIVATE
+
+  }, {
+    key: 'aInjectProperty',
+    value: function aInjectProperty(_ref2) {
+      var _this = this;
+
+      var variable = _ref2.variable;
+      var property = _ref2.property;
+      var valueCode = _ref2.valueCode;
+      var dest = _ref2.dest;
+
+      var destPath = path.join(process.cwd(), dest);
+      var destContents = fs.readFileSync(destPath, "utf8");
+      var p = inject(destContents, variable, property, valueCode);
+      p.then(function (content) {
+        _this.resolve(destPath, content);
+      });
+    }
+  }, {
+    key: 'aAssureTemplate',
+    value: function aAssureTemplate(_ref3) {
+      var src = _ref3.src;
+      var dest = _ref3.dest;
+
+      var destPath = path.join(process.cwd(), dest);
+      var exists = fs.existsSync(destPath);
+      if (!exists) {
+        this.aTemplate({ src: src, dest: dest });
+      } else {
+        this.jobs.shift();
+        this.finish();
+      }
+    }
+  }, {
+    key: 'aFile',
+    value: function aFile(_ref4) {
+      var src = _ref4.src;
+      var dest = _ref4.dest;
+
+      var srcPath = path.join(this.templatePath, src);
+      var destPath = path.join(process.cwd(), dest);
+      var contents = fs.readFileSync(srcPath);
+      this.resolve(destPath, contents);
+    }
+  }, {
+    key: 'aTemplate',
+    value: function aTemplate(_ref5) {
+      var src = _ref5.src;
+      var dest = _ref5.dest;
+
+      var srcPath = path.join(this.templatePath, src);
+      var destPath = path.join(process.cwd(), dest);
+      var templateContents = fs.readFileSync(srcPath, "utf8");
+      var template = ejs.compile(templateContents);
+      var contents = template({ ctx: this.gObj });
+      this.resolve(destPath, contents);
+    }
+  }, {
+    key: 'aInjectImport',
+    value: function aInjectImport(_ref6) {
+      var statement = _ref6.statement;
+      var dest = _ref6.dest;
+
+      var destPath = path.join(process.cwd(), dest);
+      var destContents = fs.readFileSync(destPath, "utf8");
+
+      // Find the last import statement
+      var r = new RegExp("^import.*?$(?!.*^import)", "m");
+      var match = destContents.match(r);
+      if (match != null) {
+        destContents = destContents.replace(r, match[0] + '\n' + statement);
+        this.resolve(destPath, destContents);
+        return;
+      }
+
+      // Or the 'use strict' thing
+      r = new RegExp("^.use strict.*?$(?!.*^import)", "m");
+      match = destContents.match(r);
+      if (match != null) {
+        destContents = destContents.replace(r, match[0] + '\n' + statement);
+        this.resolve(destPath, destContents);
+        return;
+      }
+
+      // Or just resort to top of file
+      destContents = statement + '\n' + destContents;
+      this.resolve(destPath, destContents);
+    }
+  }, {
+    key: 'aInject',
+    value: function aInject(_ref7) {
+      var marker = _ref7.marker;
+      var src = _ref7.src;
+      var dest = _ref7.dest;
+
+      // console.log(`INJECT ${marker} ${src} ${dest}`);
+      var srcPath = path.join(this.templatePath, src);
+      var destPath = path.join(process.cwd(), dest);
+      var templateContents = fs.readFileSync(srcPath, "utf8");
+      var template = ejs.compile(templateContents);
+      var contents = template({ ctx: this.gObj });
+
+      var destContents = fs.readFileSync(destPath, "utf8");
+      var injectedContents = destContents.replace(marker, contents + marker);
+      this.resolve(destPath, injectedContents);
+    }
+  }, {
+    key: 'resolve',
+    value: function resolve(destPath, contents) {
+      var _this2 = this;
+
+      this.conflicter.checkForCollision(destPath, contents, function (n, status) {
+        if (status == 'create' || status == 'write' || status == 'force') {
+          _this2.writeContents(destPath, contents, function () {
+            _this2.jobs.shift();
+            _this2.finish();
+          });
+        }
+        if (status == 'abort') {
+          console.log('abort');
+        }
+        if (status == 'skip' || status == 'identical') {
+          _this2.jobs.shift();
+          _this2.finish();
+        }
+      });
+      return this.conflicter.resolve();
+    }
+  }, {
+    key: 'writeContents',
+    value: function writeContents(destPath, contents, cb) {
+      var dir = path.dirname(destPath);
+      mkdirp(dir, function (err) {
+        if (err) throw err;
+        fs.writeFileSync(destPath, contents);
+        cb();
+      });
+    }
+  }, {
+    key: 'assertReady',
+    value: function assertReady(procName) {
+      if (!this.isReady) {
+        throw 'Error: ' + inspect(procName) + ' called before ready.  This is most likely because you called ' + inspect(procName) + ' from inside your generators constructor.';
+      }
+    }
+  }, {
+    key: 'makeReady',
+    value: function makeReady(gObj) {
+      this.gObj = gObj;
+      this.isReady = true;
+    }
+  }, {
+    key: 'finish',
+    value: function finish() {
+      if (this.jobs.length == 0) {
+        return;
+      } else {
+        var j = this.jobs[0];
+        switch (j.job) {
+          case 'file':
+            this.aFile(j);
+            break;
+          case 'template':
+            this.aTemplate(j);
+            break;
+          case 'assureTemplate':
+            this.aAssureTemplate(j);
+            break;
+          case 'injectProperty':
+            this.aInjectProperty(j);
+            break;
+          case 'injectImport':
+            this.aInjectImport(j);
+            break;
+          case 'inject':
+            this.aInject(j);
+            break;
+        }
+      }
+    }
+  }]);
+
+  return GenerateCore;
+})();
+
+module.exports = GenerateCore;
