@@ -1,33 +1,27 @@
-var ejs = require('ejs');
-var chalk = require('chalk');
-var glob = require ('glob');
-var inflect = require('inflect');
-var path = require('path');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
+const ejs = require('ejs');
+const inflect = require('inflect');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 // Yeoman Libraries
-var TerminalAdapter = require('../conflicter/adapter.js');
-var Conflicter = require('../conflicter/conflicter.js');
+const TerminalAdapter = require('../conflicter/adapter.js');
+const Conflicter = require('../conflicter/conflicter.js');
 
-let config = {
+const config = {
   domainIndex: 'domains/index.js',
   domainDirectory: 'domains',
   generatorDirectory: 'generators'
-}
+};
 
-let inspect = JSON.stringify
-
-//let domainsPath = path.join(__dirname, config.domainIndex);
-//let domains = require(domainsPath);
-let domains = {}
+const inspect = JSON.stringify;
 
 class GenerateCore {
-  constructor({templatePath, shouldForce}) {
+  constructor({ templatePath, shouldForce }) {
     this.templatePath = templatePath;
     this.inflect = inflect;
     this.config = config;
-    this.domains = domains;
+    this.domains = {};
     this.terminal = new TerminalAdapter();
     this.conflicter = new Conflicter(this.terminal, shouldForce);
     this.isReady = false;
@@ -39,38 +33,50 @@ class GenerateCore {
    * the answer(s) to the provided callback.
    *
    * @param {src} path relative to template folder
-   * @param {dest} path relative to application root
+   * @param {dest} absolute path
    */
   file(src, dest) {
-    this.assertReady("file()");
-    let job = 'file';
-    this.jobs.push({job, src, dest});
+    this.assertReady('file()');
+    const job = 'file';
+    this.jobs.push({ job, src, dest });
+  }
+
+  /**
+   * Replace expression with text in destination file
+   *
+   * @param {expression} value to replace
+   * @param {text} value to replace with
+   * @param {dest} absolute path
+   */
+  replace(expression, text, dest) {
+    this.assertReady('template()');
+    const job = 'replace';
+    this.jobs.push({ job, expression, text, dest });
   }
 
   /**
    * Render EJS template and copy into application
    *
    * @param {src} path relative to template folder
-   * @param {dest} path relative to application root
+   * @param {dest} absolute path
    */
   template(src, dest) {
-    this.assertReady("template()");
-    let job = 'template';
-    this.jobs.push({job, src, dest})
+    this.assertReady('template()');
+    const job = 'template';
+    this.jobs.push({ job, src, dest });
   }
 
   /**
    * If destination does not exist render EJS template and copy into dest
    *
    * @param {src} path relative to template folder
-   * @param {dest} path relative to application root
+   * @param {dest} absolute path
    */
   assureTemplate(src, dest) {
-    this.assertReady("assureTemplate()");
-    let job = 'assureTemplate';
-    this.jobs.push({job, src, dest})
+    this.assertReady('assureTemplate()');
+    const job = 'assureTemplate';
+    this.jobs.push({ job, src, dest });
   }
-
 
   /**
    * Inject import statement into dest file
@@ -79,9 +85,9 @@ class GenerateCore {
    * @param {_from}
    */
   injectImport(statement, dest) {
-    this.assertReady("file()");
-    let job = 'injectImport';
-    this.jobs.push({job, statement, dest});
+    this.assertReady('file()');
+    const job = 'injectImport';
+    this.jobs.push({ job, statement, dest });
   }
 
   /**
@@ -93,101 +99,100 @@ class GenerateCore {
    * @param {dest} path relative to application root
    */
   inject(marker, src, dest) {
-    this.assertReady("inject()");
-    let job = 'inject';
-    this.jobs.push({job, marker, src, dest});
+    this.assertReady('inject()');
+    const job = 'inject';
+    this.jobs.push({ job, marker, src, dest });
   }
 
   // PRIVATE
 
-  aInjectProperty({variable, property, valueCode, dest}) {
-    let destPath = path.join(process.cwd(), dest);
-    let destContents = fs.readFileSync(destPath, "utf8");
-    let p = inject(destContents, variable, property, valueCode);
-    p.then( (content) => {
-      this.resolve(destPath, content);
-    })
-  }
-
-  aAssureTemplate({src, dest}) {
-    let destPath = path.join(process.cwd(), dest);
-    let exists = fs.existsSync(destPath);
+  aAssureTemplate({ src, dest }) {
+    const destPath = dest; // path.join(process.cwd(), dest);
+    const exists = fs.existsSync(destPath);
     if (!exists) {
-      this.aTemplate({src, dest})
+      this.aTemplate({ src, dest });
     } else {
       this.jobs.shift();
       this.finish();
     }
   }
 
-  aFile({src, dest}) {
-    let srcPath = path.join(this.templatePath, src);
-    let destPath = path.join(process.cwd(), dest);
-    let contents = fs.readFileSync(srcPath);
+  aFile({ src, dest }) {
+    const srcPath = path.join(this.templatePath, src);
+    const destPath = dest; // path.join(process.cwd(), dest);
+    const contents = fs.readFileSync(srcPath);
     this.resolve(destPath, contents);
   }
 
-  aTemplate({src, dest}) {
-    let srcPath = path.join(this.templatePath, src);
-    let destPath = path.join(process.cwd(), dest);
-    let templateContents = fs.readFileSync(srcPath, "utf8");
-    let template = ejs.compile(templateContents);
-    let contents = template({ctx: this.gObj});
+  aTemplate({ src, dest }) {
+    const srcPath = path.join(this.templatePath, src);
+    const destPath = dest; // path.join(process.cwd(), dest);
+    const templateContents = fs.readFileSync(srcPath, 'utf8');
+    const template = ejs.compile(templateContents);
+    const contents = template({ ctx: this.gObj });
     this.resolve(destPath, contents);
   }
 
-  aInjectImport({statement, dest}) {
-    let destPath = path.join(process.cwd(), dest);
-    let destContents = fs.readFileSync(destPath, "utf8");
+  aInjectImport({ statement, dest }) {
+    const destPath = dest; // path.join(process.cwd(), dest);
+    let destContents = fs.readFileSync(destPath, 'utf8');
 
     // Find the last import statement
-    let r = new RegExp("^import.*?$(?!.*^import)", "m")
+    let r = new RegExp('^import.*?$(?!.*^import)', 'm');
     let match = destContents.match(r);
-    if (match != null) {
-      destContents = destContents.replace(r, match[0]+'\n'+statement);
+    if (match !== null) {
+      destContents = destContents.replace(r, match[0] + '\n' + statement);
       this.resolve(destPath, destContents);
       return;
     }
 
     // Or the 'use strict' thing
-    r = new RegExp("^.use strict.*?$(?!.*^import)", "m")
+    r = new RegExp('^.use strict.*?$(?!.*^import)', 'm');
     match = destContents.match(r);
-    if (match != null) {
-      destContents = destContents.replace(r, match[0]+'\n'+statement);
+    if (match !== null) {
+      destContents = destContents.replace(r, match[0] + '\n' + statement);
       this.resolve(destPath, destContents);
       return;
     }
 
     // Or just resort to top of file
-    destContents = statement+'\n'+ destContents;
+    destContents = statement + '\n' + destContents;
     this.resolve(destPath, destContents);
   }
 
-  aInject({marker, src, dest}) {
+  aInject({ marker, src, dest }) {
     // console.log(`INJECT ${marker} ${src} ${dest}`);
-    let srcPath = path.join(this.templatePath, src);
-    let destPath = path.join(process.cwd(), dest);
-    let templateContents = fs.readFileSync(srcPath, "utf8");
-    let template = ejs.compile(templateContents);
-    let contents = template({ctx: this.gObj});
+    const srcPath = path.join(this.templatePath, src);
+    const destPath = dest; // path.join(process.cwd(), dest);
+    const templateContents = fs.readFileSync(srcPath, 'utf8');
+    const template = ejs.compile(templateContents);
+    const contents = template({ ctx: this.gObj });
 
-    let destContents = fs.readFileSync(destPath, "utf8");
-    let injectedContents = destContents.replace(marker, contents+marker);
+    const destContents = fs.readFileSync(destPath, 'utf8');
+    const injectedContents = destContents.replace(marker, contents + marker);
     this.resolve(destPath, injectedContents);
+  }
+
+  aReplace({ expression, text, dest }) {
+    const destContents = fs.readFileSync(dest, 'utf8');
+    const injectedContents = destContents.replace(expression, text);
+    this.resolve(dest, injectedContents);
   }
 
   resolve(destPath, contents) {
     this.conflicter.checkForCollision(destPath, contents, (n, status) => {
-      if (status == 'create' || status == 'write' || status == 'force') {
+      if (status === 'create' || status === 'write' || status === 'force') {
         this.writeContents(destPath, contents, () => {
           this.jobs.shift();
           this.finish();
         });
       }
-      if (status == 'abort') {
+
+      if (status === 'abort') {
         console.log('abort');
       }
-      if (status == 'skip' || status == 'identical') {
+
+      if (status === 'skip' || status === 'identical') {
         this.jobs.shift();
         this.finish();
       }
@@ -196,7 +201,7 @@ class GenerateCore {
   }
 
   writeContents(destPath, contents, cb) {
-    let dir = path.dirname(destPath);
+    const dir = path.dirname(destPath);
     mkdirp(dir, (err) => {
       if (err) throw err;
       fs.writeFileSync(destPath, contents);
@@ -207,7 +212,8 @@ class GenerateCore {
 
   assertReady(procName) {
     if (!this.isReady) {
-      throw `Error: ${inspect(procName)} called before ready.  This is most likely because you called ${inspect(procName)} from inside your generators constructor.`;
+      console.log(`Error: ${inspect(procName)} called inside constructor;`);
+      process.exit();
     }
   }
 
@@ -218,29 +224,33 @@ class GenerateCore {
 
 
   finish() {
-    if (this.jobs.length == 0 ) {
-      return
-    } else {
-      let j = this.jobs[0];
+    if (this.jobs.length !== 0) {
+      const j = this.jobs[0];
       switch (j.job) {
         case 'file':
           this.aFile(j);
-          break
+          break;
         case 'template':
           this.aTemplate(j);
-          break
+          break;
+        case 'replace':
+          this.aReplace(j);
+          break;
         case 'assureTemplate':
           this.aAssureTemplate(j);
-          break
+          break;
         case 'injectProperty':
           this.aInjectProperty(j);
-          break
+          break;
         case 'injectImport':
           this.aInjectImport(j);
-          break
+          break;
         case 'inject':
           this.aInject(j);
-          break
+          break;
+        default:
+          console.log('Unrecognized job.');
+          break;
       }
     }
   }

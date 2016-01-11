@@ -2,7 +2,7 @@ import path from 'path';
 
 class <%=ctx.camelizeName()%>Generator {
 
-  constructor({gen, command, name, args}) {
+  constructor({ gen, command, name, args }) {
     this.gen = gen;
     this.command = command;
     this.name = name;
@@ -10,8 +10,8 @@ class <%=ctx.camelizeName()%>Generator {
   }
 
   run() {
-    let gen = this.gen;
-    let fname = `${this.camelizeName()}<%=ctx.camelizeName()%>.js`
+    const gen = this.gen;
+    const fname = `${this.camelizeName()}<%=ctx.camelizeName()%>.js`
 
     switch (this.command) {
      default:

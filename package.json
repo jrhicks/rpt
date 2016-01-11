@@ -45,5 +45,8 @@
     "read-chunk": "^1.0.1",
     "text-table": "^0.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.14.0"
+  }
 }

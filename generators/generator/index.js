@@ -1,8 +1,8 @@
 import path from 'path';
 
-class GeneratorGenerator {
+class BoilerplateGenerator {
 
-  constructor({gen, command, name, args}) {
+  constructor({ gen, command, name, args }) {
     this.gen = gen;
     this.command = command;
     this.name = name;
@@ -10,17 +10,17 @@ class GeneratorGenerator {
   }
 
   run() {
-    let gen = this.gen;
+    const gen = this.gen;
 
     // Compute Destination Directory Relative To App Root
-    let generatorDir = gen.config.generatorDirectory;
-    let genName = this.dasherizeName();
-    let destDir = path.join(generatorDir, genName);
+    const generatorDir = gen.config.generatorDirectory;
+    const genName = this.dasherizeName();
+    const destDir = path.join(generatorDir, genName);
 
     switch (this.command) {
-     default:
-      gen.template('index.js.ejs', path.join(destDir, 'index.js'));
-      gen.template('template.js.ejs', path.join(destDir, 'templates', 'template.js.ejs'));
+      default:
+        gen.template('index.js.ejs', path.join(destDir, 'index.js'));
+        gen.template('template.js.ejs', path.join(destDir, 'templates', 'template.js.ejs'));
     }
   }
 
@@ -50,4 +50,4 @@ class GeneratorGenerator {
 
 }
 
-module.exports = GeneratorGenerator;
+module.exports = BoilerplateGenerator;
