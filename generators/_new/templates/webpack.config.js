@@ -23,7 +23,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'app'),
         exclude: /node_modules/,
         loader: 'babel'
       },
