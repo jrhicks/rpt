@@ -1,24 +1,16 @@
 {
-  "name": "eatstarch",
-  "version": "1.0.0",
+  "name": "<%=ctx.name%>",
+  "version": "0.0.0",
   "description": "",
-  "main": "src/main.js",
   "scripts": {
     "build": "webpack -d",
     "lint": "eslint 'src/**/*.@(js|jsx)'",
     "start": "webpack-dev-server --devtool source-map --inline --progress --colors --content-base build",
     "validate": "npm ls"
   },
-  "keywords": [
-    "health",
-    "starch",
-    "whole-food-plant-based",
-    "vegan",
-    "low-fat",
-    "highcarb"
-  ],
-  "author": "Jeffrey Hicks",
-  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "license": "",
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "babel-runtime": "^6.3.19",
@@ -41,15 +33,9 @@
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
     "open-browser-webpack-plugin": "0.0.2",
-    "precommit-hook": "^3.0.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
-  },
-  "pre-commit": [
-    "lint",
-    "validate",
-    "test"
-  ]
+  }
 }

@@ -5,7 +5,7 @@ var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 module.exports = {
   entry: [
     'babel-polyfill',
-    path.resolve(__dirname, 'src/Main.jsx')
+    path.resolve(__dirname, 'app/Main.jsx')
   ],
 
   resolve: {

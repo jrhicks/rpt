@@ -1,23 +1,22 @@
 import path from 'path';
-import fs from 'fs';
 
 class RouteGenerator {
 
-  constructor({gen, command, name, args}) {
+  constructor({ gen, name }) {
     this.gen = gen;
     this.name = name;
   }
 
   run() {
-    let gen = this.gen;
-
-    // Compute Destination Directory Relative To App Root
-    let cwd = process.cwd();
-    let routeFolderName = this.camelizeName();
-    gen.template('index.js.ejs', path.join(cwd, 'routes', routeFolderName, 'index.js'));
-    gen.template('Component.jsx.ejs', path.join(cwd, 'routes', routeFolderName, 'components', `${this.camelizeName()}.jsx`));
+    const gen = this.gen;
+    const cwd = process.cwd();
+    const routeFolderName = this.camelizeName();
+    gen.template('index.js.ejs',
+      path.join(cwd, 'routes', routeFolderName, 'index.js'));
+    gen.template('Component.jsx.ejs',
+      path.join(cwd, routeFolderName, `${this.camelizeName()}.jsx`));
     gen.replace('childRoutes: [',
-                `childRoutes: [\n    require('./routes/${this.camelizeName()}'),`,
+                `childRoutes: [\n    require('./${this.camelizeName()}'),`,
                 path.join(cwd, 'index.js'));
   }
 
@@ -44,7 +43,6 @@ class RouteGenerator {
   camelizeName() {
     return this.gen.inflect.camelize(this.name);
   }
-
 }
 
 module.exports = RouteGenerator;

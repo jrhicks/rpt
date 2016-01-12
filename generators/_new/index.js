@@ -8,26 +8,28 @@ class GeneratorGenerator {
   }
 
   run() {
-    const gen = this.gen;
     const cwd = process.cwd();
-
     const paths = [
                     ['.babelrc'],
                     ['.eslintignore'],
                     ['.eslintrc'],
                     ['package.json'],
                     ['webpack.config.js'],
-                    ['src', 'index.html'],
-                    ['src', 'Main.jsx'],
-                    ['src', 'views', 'index.js'],
-                    ['src', 'views', 'components', 'App.jsx']];
+                    ['app', 'index.html'],
+                    ['app', 'Main.jsx'],
+                    ['app', 'views', 'index.js'],
+                    ['app', 'views', 'App.jsx']];
 
     switch (this.command) {
       default:
         for (const p of paths) {
-          this.gen.file(path.join('./', ...p), path.join(cwd, this.name, ...p));
+          this.gen.template(path.join('./', ...p), path.join(cwd, this.name, ...p));
         }
     }
+  }
+
+  titleizeName() {
+    return this.gen.inflect.titleize(this.name);
   }
 }
 
