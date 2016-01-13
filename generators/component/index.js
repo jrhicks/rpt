@@ -1,6 +1,6 @@
 import path from 'path';
 
-class <%=ctx.camelizeName()%>Generator {
+class ComponentGenerator {
 
   constructor({ gen, command, name, args }) {
     this.gen = gen;
@@ -11,11 +11,11 @@ class <%=ctx.camelizeName()%>Generator {
 
   run() {
     const gen = this.gen;
-    const fname = `${this.camelizeName()}<%=ctx.camelizeName()%>.js`
+    const fname = `${this.camelizeName()}.jsx`;
 
     switch (this.command) {
       default:
-        gen.template('template.js.ejs', path.join('<%=ctx.pluralDasherizeName()%>', fname));
+        gen.template('template.js.ejs', path.join('components', fname));
     }
   }
 
@@ -41,4 +41,4 @@ class <%=ctx.camelizeName()%>Generator {
 
 }
 
-module.exports = <%=ctx.camelizeName()%>Generator;
+module.exports = ComponentGenerator;
