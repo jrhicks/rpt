@@ -16,7 +16,7 @@ class ReactmdlGenerator {
     switch (this.command) {
       default:
         gen.dir('components',
-                path.join(root, 'app', 'components'));
+                path.join(root, 'app', 'components', 'react-mdl'));
 
         gen.dir('assets',
                 path.join(root, 'assets', 'react-mdl'));

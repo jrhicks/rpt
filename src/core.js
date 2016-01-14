@@ -6,7 +6,6 @@ const mkdirp = require('mkdirp');
 const findRoot = require('find-root');
 const glob = require('glob');
 
-
 // Yeoman Libraries
 const TerminalAdapter = require('../conflicter/adapter.js');
 const Conflicter = require('../conflicter/conflicter.js');
@@ -39,10 +38,23 @@ class GenerateCore {
    * @param {src} path relative to template folder
    * @param {dest} absolute path
    */
-  dir(src, dest) {
-    this.assertReady('file()');
+  dir(dirSrc, dirDest) {
     const job = 'file';
-    this.jobs.push({ job, src, dest });
+    const srcPath = path.join(this.templatePath, dirSrc);
+    const destPath = dirDest; // path.join(process.cwd(), dest);
+    // options is optional
+    glob(path.join(srcPath, '**/*'), {}, (er, files) => {
+      for (const f of files) {
+        if (fs.lstatSync(f).isFile()) {
+          // fsrc is relative path to file from template folder
+          const src = path.relative(this.templatePath, f);
+          // fdest is absolute destination, computed by applying
+          // the relative path of file from src to supplied destination
+          const dest = path.resolve(destPath, path.relative(srcPath, f));
+          this.jobs.push({ job, src, dest });
+        }
+      }
+    });
   }
 
   /**
@@ -133,23 +145,6 @@ class GenerateCore {
       this.finish();
     }
   }
-
-  aDir({ src, dest }) {
-    const srcPath = path.join(this.templatePath, src);
-    const destPath = dest; // path.join(process.cwd(), dest);
-    // options is optional
-    glob(path.join(srcPath, '**/*'), {}, (er, files) => {
-      for (const f of files) {
-        // fsrc is relative path to file from template folder
-        const fsrc = path.relative(this.templatePath, f);
-        // fdest is absolute destination, computed by applying
-        // the relative path of file from src to supplied destination
-        const fdest = path.reslove(destPath, path.relative(srcPath, f));
-        console.log(fsrc + '->' + fdest);
-      }
-    });
-  }
-
 
   aFile({ src, dest }) {
     const srcPath = path.join(this.templatePath, src);
@@ -263,9 +258,6 @@ class GenerateCore {
       switch (j.job) {
         case 'file':
           this.aFile(j);
-          break;
-        case 'dir':
-          this.aDir(j);
           break;
         case 'template':
           this.aTemplate(j);

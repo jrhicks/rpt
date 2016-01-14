@@ -54,10 +54,46 @@ var GenerateCore = (function () {
 
   _createClass(GenerateCore, [{
     key: 'dir',
-    value: function dir(src, dest) {
-      this.assertReady('file()');
+    value: function dir(dirSrc, dirDest) {
+      var _this = this;
+
       var job = 'file';
-      this.jobs.push({ job: job, src: src, dest: dest });
+      var srcPath = path.join(this.templatePath, dirSrc);
+      var destPath = dirDest; // path.join(process.cwd(), dest);
+      // options is optional
+      glob(path.join(srcPath, '**/*'), {}, function (er, files) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var f = _step.value;
+
+            if (fs.lstatSync(f).isFile()) {
+              // fsrc is relative path to file from template folder
+              var src = path.relative(_this.templatePath, f);
+              // fdest is absolute destination, computed by applying
+              // the relative path of file from src to supplied destination
+              var dest = path.resolve(destPath, path.relative(srcPath, f));
+              _this.jobs.push({ job: job, src: src, dest: dest });
+            }
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+      });
     }
 
     /**
@@ -172,53 +208,10 @@ var GenerateCore = (function () {
       }
     }
   }, {
-    key: 'aDir',
-    value: function aDir(_ref3) {
-      var _this = this;
-
+    key: 'aFile',
+    value: function aFile(_ref3) {
       var src = _ref3.src;
       var dest = _ref3.dest;
-
-      var srcPath = path.join(this.templatePath, src);
-      var destPath = dest; // path.join(process.cwd(), dest);
-      // options is optional
-      glob(path.join(srcPath, '**/*'), {}, function (er, files) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var f = _step.value;
-
-            // fsrc is relative path to file from template folder
-            var fsrc = path.relative(_this.templatePath, f);
-            // fdest is absolute destination, computed by applying
-            // the relative path of file from src to supplied destination
-            var fdest = path.reslove(destPath, path.relative(srcPath, f));
-            console.log(fsrc + '->' + fdest);
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-      });
-    }
-  }, {
-    key: 'aFile',
-    value: function aFile(_ref4) {
-      var src = _ref4.src;
-      var dest = _ref4.dest;
 
       var srcPath = path.join(this.templatePath, src);
       var destPath = dest; // path.join(process.cwd(), dest);
@@ -227,9 +220,9 @@ var GenerateCore = (function () {
     }
   }, {
     key: 'aTemplate',
-    value: function aTemplate(_ref5) {
-      var src = _ref5.src;
-      var dest = _ref5.dest;
+    value: function aTemplate(_ref4) {
+      var src = _ref4.src;
+      var dest = _ref4.dest;
 
       var srcPath = path.join(this.templatePath, src);
       var destPath = dest; // path.join(process.cwd(), dest);
@@ -240,9 +233,9 @@ var GenerateCore = (function () {
     }
   }, {
     key: 'aInjectImport',
-    value: function aInjectImport(_ref6) {
-      var statement = _ref6.statement;
-      var dest = _ref6.dest;
+    value: function aInjectImport(_ref5) {
+      var statement = _ref5.statement;
+      var dest = _ref5.dest;
 
       var destPath = dest; // path.join(process.cwd(), dest);
       var destContents = fs.readFileSync(destPath, 'utf8');
@@ -271,10 +264,10 @@ var GenerateCore = (function () {
     }
   }, {
     key: 'aInject',
-    value: function aInject(_ref7) {
-      var marker = _ref7.marker;
-      var src = _ref7.src;
-      var dest = _ref7.dest;
+    value: function aInject(_ref6) {
+      var marker = _ref6.marker;
+      var src = _ref6.src;
+      var dest = _ref6.dest;
 
       // console.log(`INJECT ${marker} ${src} ${dest}`);
       var srcPath = path.join(this.templatePath, src);
@@ -289,10 +282,10 @@ var GenerateCore = (function () {
     }
   }, {
     key: 'aReplace',
-    value: function aReplace(_ref8) {
-      var expression = _ref8.expression;
-      var text = _ref8.text;
-      var dest = _ref8.dest;
+    value: function aReplace(_ref7) {
+      var expression = _ref7.expression;
+      var text = _ref7.text;
+      var dest = _ref7.dest;
 
       var destContents = fs.readFileSync(dest, 'utf8');
       var injectedContents = destContents.replace(expression, text);
@@ -354,9 +347,6 @@ var GenerateCore = (function () {
         switch (j.job) {
           case 'file':
             this.aFile(j);
-            break;
-          case 'dir':
-            this.aDir(j);
             break;
           case 'template':
             this.aTemplate(j);
