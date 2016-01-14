@@ -3,6 +3,9 @@ const inflect = require('inflect');
 const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
+const findRoot = require('find-root');
+const glob = require('glob');
+
 
 // Yeoman Libraries
 const TerminalAdapter = require('../conflicter/adapter.js');
@@ -22,10 +25,24 @@ class GenerateCore {
     this.inflect = inflect;
     this.config = config;
     this.domains = {};
+    this.findRoot = () => findRoot(process.cwd());
+
     this.terminal = new TerminalAdapter();
     this.conflicter = new Conflicter(this.terminal, shouldForce);
     this.isReady = false;
     this.jobs = [];
+  }
+
+  /**
+   * Deep copy directory
+   *
+   * @param {src} path relative to template folder
+   * @param {dest} absolute path
+   */
+  dir(src, dest) {
+    this.assertReady('file()');
+    const job = 'file';
+    this.jobs.push({ job, src, dest });
   }
 
   /**
@@ -116,6 +133,23 @@ class GenerateCore {
       this.finish();
     }
   }
+
+  aDir({ src, dest }) {
+    const srcPath = path.join(this.templatePath, src);
+    const destPath = dest; // path.join(process.cwd(), dest);
+    // options is optional
+    glob(path.join(srcPath, '**/*'), {}, (er, files) => {
+      for (const f of files) {
+        // fsrc is relative path to file from template folder
+        const fsrc = path.relative(this.templatePath, f);
+        // fdest is absolute destination, computed by applying
+        // the relative path of file from src to supplied destination
+        const fdest = path.reslove(destPath, path.relative(srcPath, f));
+        console.log(fsrc + '->' + fdest);
+      }
+    });
+  }
+
 
   aFile({ src, dest }) {
     const srcPath = path.join(this.templatePath, src);
@@ -230,6 +264,9 @@ class GenerateCore {
         case 'file':
           this.aFile(j);
           break;
+        case 'dir':
+          this.aDir(j);
+          break;
         case 'template':
           this.aTemplate(j);
           break;
@@ -244,6 +281,9 @@ class GenerateCore {
           break;
         case 'injectImport':
           this.aInjectImport(j);
+          break;
+        case 'exec':
+          this.aExec(j);
           break;
         case 'inject':
           this.aInject(j);

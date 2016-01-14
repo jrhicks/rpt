@@ -1,0 +1,31 @@
+import React from 'react';
+import { Link } from 'react-router';
+import { Layout, Header, Navigation, Drawer, Content } from 'react-mdl';
+
+class DashboardLayout extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <Layout fixedHeader>
+          <Header title={this.props.title}>
+              <Navigation>
+              </Navigation>
+          </Header>
+          <Drawer>
+            <Navigation>
+            </Navigation>
+          </Drawer>
+          <Content>
+            {this.props.children}
+          </Content>
+      </Layout>
+    );
+  }
+}
+
+module.exports = DashboardLayout;

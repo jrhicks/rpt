@@ -1,0 +1,21 @@
+import React from 'react';
+import DashboardLayout from './DashboardLayout';
+
+class Dashboard extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+        <DashboardLayout title="Dashboard">
+          Dashboard Contents
+        </DashboardLayout>
+    );
+  }
+
+}
+
+module.exports = Dashboard;
