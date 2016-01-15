@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <AppLayout>
-        <StandardHeader title="Workspace 1" />
+        <StandardHeader title="<%=ctx.titleizeName()%>" />
 
         <TabBar>
           <Tab to="/xyz">Tab 1</Tab>

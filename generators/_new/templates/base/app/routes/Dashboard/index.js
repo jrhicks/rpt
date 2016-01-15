@@ -1,6 +1,6 @@
 module.exports = {
   path: '/',
-  component: require('./Dashboard'),
+  component: require('./components/Dashboard'),
   childRoutes: [
   ]
 };

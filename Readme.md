@@ -16,13 +16,29 @@ npm run start
 
 npm g reactmdl
 
-cd app/views
 
-npm g route tab1
+# Nested Routes
 
-## RoadMap
+The primary nesting is
 
-npm g workspace workspace1
+WorkSpaces -> Tabs -> Views -> SubRoutes
+
+npm g workspace Project
+
+## Nested Routes To Be Developed Very Soon
+
+npm g Tab Project Milestones
+
+npm g View Project Milestones ShowMilestone
+
+npm g View Project Milestones CreateMilestone
+
+npm g View Project Milestones EditMilestone
+
+npm g View Project Milestones ListOpenMilestones
+
+npm g View Project Milestones ListClosedMilestones
+
 
 ## Develop
 
