@@ -29,6 +29,7 @@ class ReactmdlGenerator {
 
         gen.replace(/<\/head>/, `
 <link rel="stylesheet" href="material.css">
+<link rel="stylesheet" href="material_override.css">
 <script src="material.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
@@ -37,6 +38,7 @@ class ReactmdlGenerator {
         gen.replace(/require\('file\?name=/,
 `require('file?name=[name].[ext]!../assets/react-mdl/material.css');
 require('file?name=[name].[ext]!../assets/react-mdl/material.js');
+require('file?name=[name].[ext]!../assets/react-mdl/material_override.css');
 require('file?name=`, path.join(root, 'app', 'Main.jsx'));
     }
   }
