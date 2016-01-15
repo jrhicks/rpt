@@ -38,7 +38,7 @@ class ReactmdlGenerator {
         gen.replace(/require\('file\?name=/,
 `require('file?name=[name].[ext]!../assets/react-mdl/material.css');
 require('file?name=[name].[ext]!../assets/react-mdl/material.js');
-require('file?name=[name].[ext]!../assets/react-mdl/material_override.css');
+require('file?name=[name].[ext]!../assets/react-mdl/material_overrides.css');
 require('file?name=`, path.join(root, 'app', 'Main.jsx'));
     }
   }
