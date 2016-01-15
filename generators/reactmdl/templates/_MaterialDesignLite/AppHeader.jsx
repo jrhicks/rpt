@@ -10,7 +10,7 @@ class AppHeader extends React.Component {
             <i className="material-icons">view_module</i>
           </button>
           <ul className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-left" htmlFor="select_module">
-            {this.props.menu || this.props.children}
+            {this.props.children}
           </ul>
           <span className="mdl-layout-title">{this.props.title}</span>
         </div>

@@ -24,8 +24,8 @@ class ReactmdlGenerator {
         gen.template('Dashboard.jsx.ejs',
                 path.join(root, 'app', 'views', 'Dashboard.jsx'));
 
-        gen.template('GlobalMenu.jsx.ejs',
-                path.join(root, 'app', 'views', 'GlobalMenu.jsx'));
+        gen.template('StandardHeader.jsx.ejs',
+                path.join(root, 'app', 'views', 'StandardHeader.jsx'));
 
         gen.replace(/<\/head>/, `
 <link rel="stylesheet" href="material.css">

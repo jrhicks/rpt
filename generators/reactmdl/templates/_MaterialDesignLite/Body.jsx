@@ -13,4 +13,4 @@ class Body extends React.Component {
   }
 }
 
-module.exports = WSContent;
+module.exports = Body;

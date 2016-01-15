@@ -1,5 +1,4 @@
 import React from 'react';
-import Lorem from 'react-lorem-component';
 
 class Content extends React.Component {
 

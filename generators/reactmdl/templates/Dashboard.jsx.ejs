@@ -1,5 +1,5 @@
 import React from 'react';
-import GlobalMenu from './GlobalMenu';
+import StandardHeader from './StandardHeader';
 
 import { AppLayout, AppHeader,
          TabBar, Tab,
@@ -17,14 +17,17 @@ class Dashboard extends React.Component {
   render() {
     return (
       <AppLayout>
-        <AppHeader title="Workspace" menu={GlobalMenu} />
+        <StandardHeader title="Workspace 1" />
 
         <TabBar>
-          <Tab to="/xyz">XYZ</Tab>
+          <Tab to="/xyz">Tab 1</Tab>
+          <Tab to="/xyz">Tab 2</Tab>
+          <Tab to="/xyz">Tab 3</Tab>
+          <Tab to="/xyz">Tab 4</Tab>
         </TabBar>
 
         <Content>
-          <ContentHeader title="Realtime Readings">
+          <ContentHeader title="Tab 1">
             <ContentAction to="New">New</ContentAction>
           </ContentHeader>
           <Drawer>

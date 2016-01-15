@@ -8,7 +8,7 @@ class ContentHeader extends React.Component {
     return (
       <header className="mdl-layout__header mdl-layout__header--transparent mdl-layout--fixed-header">
         <div className="mdl-layout__header-row">
-          <span style={black} className="mdl-layout-title">Realtime Readings</span>
+          <span style={black} className="mdl-layout-title">{this.props.title}</span>
 
           <div className="mdl-layout-spacer"></div>
 
