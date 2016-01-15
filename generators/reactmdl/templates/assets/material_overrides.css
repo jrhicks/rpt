@@ -1,0 +1,29 @@
+
+/* OVERRIDES */
+
+.mdl-layout__header-row {
+  padding: 0 40px 0 60px;
+}
+
+@media screen and (min-width: 1025px) {
+    .mdl-layout--fixed-drawer > .mdl-layout__inner-container > .mdl-layout__header .mdl-layout__header-row {
+      padding-left: 20px;
+    }
+}
+
+/* CUSTOM */
+
+.mdl-layout__content-container {
+  padding: 0 20px 0 20px;
+}
+
+.mdl-layout__drawer-title {
+  font-size: 20px;
+  padding-left: 20px;
+  padding-top: 1em;
+  position: fixed;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+  padding: 10px 30px;
+}

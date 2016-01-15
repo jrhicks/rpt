@@ -1,5 +1,11 @@
 import React from 'react';
-import DashboardLayout from './DashboardLayout';
+import GlobalMenu from './GlobalMenu';
+
+import { AppLayout, AppHeader,
+         TabBar, Tab,
+         Content, ContentHeader, ContentAction,
+         Drawer, DrawerGroup, DrawerLink,
+         Body } from './_MaterialDesignLite';
 
 class Dashboard extends React.Component {
 
@@ -10,9 +16,38 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-        <DashboardLayout title="Dashboard">
-          Dashboard Contents
-        </DashboardLayout>
+      <AppLayout>
+        <AppHeader title="Workspace" menu={GlobalMenu} />
+
+        <TabBar>
+          <Tab to="/xyz">XYZ</Tab>
+        </TabBar>
+
+        <Content>
+          <ContentHeader title="Realtime Readings">
+            <ContentAction to="New">New</ContentAction>
+          </ContentHeader>
+          <Drawer>
+            <DrawerGroup title="Views">
+              <DrawerLink to="/link1">Link 1</DrawerLink>
+              <DrawerLink to="/link1">Link 2</DrawerLink>
+              <DrawerLink to="/link1">Link 3</DrawerLink>
+              <DrawerLink to="/link1">Link 4</DrawerLink>
+            </DrawerGroup>
+
+            <DrawerGroup title="Views">
+              <DrawerLink to="/link1">Link 1</DrawerLink>
+              <DrawerLink to="/link1">Link 2</DrawerLink>
+              <DrawerLink to="/link1">Link 3</DrawerLink>
+              <DrawerLink to="/link1">Link 4</DrawerLink>
+            </DrawerGroup>
+          </Drawer>
+
+          <Body>
+            {this.props.children}
+          </Body>
+        </Content>
+      </AppLayout>
     );
   }
 
