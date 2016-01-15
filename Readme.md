@@ -6,11 +6,23 @@ Write and use generators that live in your project's repository.
 
 npm install rpt -g
 
-rpt postinstall
+rpt new MyCoolApp
 
-rpt g generator MyGenerator
+cd MyCoolApp
 
-rpt g MyGenerator
+npm install
+
+npm run start
+
+npm g reactmdl
+
+cd app/views
+
+npm g route tab1
+
+## RoadMap
+
+npm g workspace workspace1
 
 ## Develop
 
