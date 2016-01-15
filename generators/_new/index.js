@@ -9,23 +9,10 @@ class GeneratorGenerator {
 
   run() {
     const cwd = process.cwd();
-    const paths = [
-                    ['.babelrc'],
-                    ['.eslintignore'],
-                    ['.eslintrc'],
-                    ['package.json'],
-                    ['webpack.config.js'],
-                    ['app', 'index.html'],
-                    ['app', 'Main.jsx'],
-                    ['app', 'views', 'index.js'],
-                    ['app', 'views', 'App.jsx']];
 
-    switch (this.command) {
-      default:
-        for (const p of paths) {
-          this.gen.template(path.join('./', ...p), path.join(cwd, this.name, ...p));
-        }
-    }
+    this.gen.dir('base', path.join(cwd, this.name));
+    this.gen.template('Dashboard.jsx.ejs',
+                  path.join(cwd, this.name, 'app', 'routes', 'Dashboard', 'Dashboard.jsx'));
   }
 
   titleizeName() {

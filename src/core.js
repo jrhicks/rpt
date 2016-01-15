@@ -39,22 +39,21 @@ class GenerateCore {
    * @param {dest} absolute path
    */
   dir(dirSrc, dirDest) {
-    const job = 'file';
+    const job = 'template';
     const srcPath = path.join(this.templatePath, dirSrc);
     const destPath = dirDest; // path.join(process.cwd(), dest);
     // options is optional
-    glob(path.join(srcPath, '**/*'), {}, (er, files) => {
-      for (const f of files) {
-        if (fs.lstatSync(f).isFile()) {
-          // fsrc is relative path to file from template folder
-          const src = path.relative(this.templatePath, f);
-          // fdest is absolute destination, computed by applying
-          // the relative path of file from src to supplied destination
-          const dest = path.resolve(destPath, path.relative(srcPath, f));
-          this.jobs.push({ job, src, dest });
-        }
+    const files = glob.sync(path.join(srcPath, '**/*'));
+    for (const f of files) {
+      if (fs.lstatSync(f).isFile()) {
+        // fsrc is relative path to file from template folder
+        const src = path.relative(this.templatePath, f);
+        // fdest is absolute destination, computed by applying
+        // the relative path of file from src to supplied destination
+        const dest = path.resolve(destPath, path.relative(srcPath, f));
+        this.jobs.push({ job, src, dest });
       }
-    });
+    }
   }
 
   /**

@@ -16,16 +16,16 @@ class ReactmdlGenerator {
     switch (this.command) {
       default:
         gen.dir('_MaterialDesignLite',
-                path.join(root, 'app', 'views', '_MaterialDesignLite'));
+                path.join(root, 'app', 'components', 'MaterialDesignLite'));
 
         gen.dir('assets',
                 path.join(root, 'assets', 'react-mdl'));
 
         gen.template('Dashboard.jsx.ejs',
-                path.join(root, 'app', 'views', 'Dashboard.jsx'));
+                path.join(root, 'app', 'routes', 'Dashboard', 'components', 'Dashboard.jsx'));
 
         gen.template('StandardHeader.jsx.ejs',
-                path.join(root, 'app', 'views', 'StandardHeader.jsx'));
+                path.join(root, 'app', 'components', 'StandardLayout', 'StandardHeader.jsx'));
 
         gen.replace(/<\/head>/, `
 <link rel="stylesheet" href="material.css">

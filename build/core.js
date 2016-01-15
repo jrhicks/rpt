@@ -55,45 +55,42 @@ var GenerateCore = (function () {
   _createClass(GenerateCore, [{
     key: 'dir',
     value: function dir(dirSrc, dirDest) {
-      var _this = this;
-
-      var job = 'file';
+      var job = 'template';
       var srcPath = path.join(this.templatePath, dirSrc);
       var destPath = dirDest; // path.join(process.cwd(), dest);
       // options is optional
-      glob(path.join(srcPath, '**/*'), {}, function (er, files) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+      var files = glob.sync(path.join(srcPath, '**/*'));
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var f = _step.value;
+      try {
+        for (var _iterator = files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var f = _step.value;
 
-            if (fs.lstatSync(f).isFile()) {
-              // fsrc is relative path to file from template folder
-              var src = path.relative(_this.templatePath, f);
-              // fdest is absolute destination, computed by applying
-              // the relative path of file from src to supplied destination
-              var dest = path.resolve(destPath, path.relative(srcPath, f));
-              _this.jobs.push({ job: job, src: src, dest: dest });
-            }
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
+          if (fs.lstatSync(f).isFile()) {
+            // fsrc is relative path to file from template folder
+            var src = path.relative(this.templatePath, f);
+            // fdest is absolute destination, computed by applying
+            // the relative path of file from src to supplied destination
+            var dest = path.resolve(destPath, path.relative(srcPath, f));
+            this.jobs.push({ job: job, src: src, dest: dest });
           }
         }
-      });
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     }
 
     /**
@@ -294,13 +291,13 @@ var GenerateCore = (function () {
   }, {
     key: 'resolve',
     value: function resolve(destPath, contents) {
-      var _this2 = this;
+      var _this = this;
 
       this.conflicter.checkForCollision(destPath, contents, function (n, status) {
         if (status === 'create' || status === 'write' || status === 'force') {
-          _this2.writeContents(destPath, contents, function () {
-            _this2.jobs.shift();
-            _this2.finish();
+          _this.writeContents(destPath, contents, function () {
+            _this.jobs.shift();
+            _this.finish();
           });
         }
 
@@ -309,8 +306,8 @@ var GenerateCore = (function () {
         }
 
         if (status === 'skip' || status === 'identical') {
-          _this2.jobs.shift();
-          _this2.finish();
+          _this.jobs.shift();
+          _this.finish();
         }
       });
       return this.conflicter.resolve();
