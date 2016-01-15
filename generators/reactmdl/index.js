@@ -29,7 +29,7 @@ class ReactmdlGenerator {
 
         gen.replace(/<\/head>/, `
 <link rel="stylesheet" href="material.css">
-<link rel="stylesheet" href="material_override.css">
+<link rel="stylesheet" href="material_overrides.css">
 <script src="material.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
