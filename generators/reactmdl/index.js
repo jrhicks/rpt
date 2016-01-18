@@ -13,22 +13,20 @@ class ReactmdlGenerator {
     const gen = this.gen;
     const root = this.gen.findRoot();
 
-    switch (this.command) {
-      default:
-        gen.dir('MaterialDesignLite',
-                path.join(root, 'app', 'components', 'MaterialDesignLite'));
+    gen.dir('MaterialDesignLite',
+            path.join(root, 'app', 'components', 'MaterialDesignLite'));
 
-        gen.dir('StandardLayout',
-                path.join(root, 'app', 'components', 'StandardLayout'));
+    gen.dir('StandardLayout',
+            path.join(root, 'app', 'components', 'StandardLayout'));
 
-        gen.dir('assets',
-                path.join(root, 'assets', 'react-mdl'));
+    gen.dir('assets',
+            path.join(root, 'assets', 'react-mdl'));
 
-        gen.template('Dashboard.jsx.ejs',
-                path.join(root, 'app', 'routes', 'Dashboard', 'components', 'Dashboard.jsx'));
+    gen.template('Dashboard.jsx.ejs',
+            path.join(root, 'app', 'routes', 'Dashboard', 'components', 'Dashboard.jsx'));
 
 
-        gen.replace(/<\/head>/, `
+    gen.replace(/<\/head>/, `
 <link rel="stylesheet" href="material.css">
 <link rel="stylesheet" href="material_overrides.css">
 <script src="material.js"></script>
@@ -36,12 +34,11 @@ class ReactmdlGenerator {
 </head>
 `, path.join(root, 'app', 'index.html'));
 
-        gen.replace(/require\('file\?name=/,
+    gen.replace(/require\('file\?name=/,
 `require('file?name=[name].[ext]!../assets/react-mdl/material.css');
 require('file?name=[name].[ext]!../assets/react-mdl/material.js');
 require('file?name=[name].[ext]!../assets/react-mdl/material_overrides.css');
 require('file?name=`, path.join(root, 'app', 'Main.jsx'));
-    }
   }
 
   inspect(v) {
