@@ -57,6 +57,18 @@ class GenerateCore {
   }
 
   /**
+   * Deep copy directory
+   *
+   * @param {src} path relative to template folder
+   * @param {dest} absolute path
+   */
+  append(data, dirDest) {
+    const job = 'append';
+    const destPath = dirDest; // path.join(process.cwd(), dest);
+    this.jobs.push({ job, data, dest });
+  }
+
+  /**
    * Copy file from template to application
    * the answer(s) to the provided callback.
    *

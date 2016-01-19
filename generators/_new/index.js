@@ -1,6 +1,8 @@
+'user strict';
+
 const path = require('path');
 
-class GeneratorGenerator {
+class NewGenerator {
 
   constructor({ gen, name }) {
     this.gen = gen;
@@ -30,4 +32,4 @@ class GeneratorGenerator {
   }
 }
 
-module.exports = GeneratorGenerator;
+module.exports = NewGenerator;

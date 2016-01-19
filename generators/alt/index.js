@@ -22,8 +22,11 @@ class AltGenerator {
         gen.template('store.js.ejs',
           path.join(root, 'app', 'stores', `${this.camelizeName()}Store.js`));
         break;
-
       default:
+        gen.template('index.js',
+          path.join(root, 'app', 'stores'));
+        gen.template('index.js',
+          path.join(root, 'app', 'actions'));
         gen.template('alt.js.ejs',
           path.join(root, 'app', 'alt.js'));
     }
