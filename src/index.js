@@ -3,6 +3,13 @@
 const program = require('commander');
 const pkg = require('../package.json');
 const generateHelper = require('./generateHelper');
+const register = require('babel-core/register');
+
+// require code not in node_modules with babel stage=0
+register({
+  presets: ['es2015', 'stage-0'],
+});
+
 
 console.log('React Project Tools');
 console.log('  rpt (c) 2016 @jrhicks - MIT LICENSE');

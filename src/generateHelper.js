@@ -2,12 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const GenCore = require('./core');
 const findRoot = require('find-root');
-const register = require('babel-core/register');
-
-// require code not in node_modules with babel stage=0
-register({
-  presets: ['es2015', 'stage-0'],
-});
 
 function generateHelper(generatorCommand, name, args, options, searchProjectGenerators) {
   // Setup GeneratorCore
