@@ -4,7 +4,15 @@ Write and use generators that live in your project's repository.
 
 ## Gettings Started
 
-npm install rpt -g
+git clone https://github.com/jrhicks/rpt.git
+
+cd rpt
+
+npm install
+
+npm link
+
+cd ..
 
 rpt new MyCoolApp
 
