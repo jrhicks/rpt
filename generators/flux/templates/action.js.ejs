@@ -1,11 +1,10 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import faker from 'faker';
 
 class <%=ctx.camelizeName()%>Actions {
   update<%=ctx.camelizeName()%>(<%=ctx.lowerCamelizeName()%>) {
     const action = {
       type: '<%=ctx.camelizeName()%>/update',
-      <%=ctx.lowerCamelizeName()%>: <%=ctx.lowerCamelizeName()%>
+      data: <%=ctx.lowerCamelizeName()%>
     };
 
     AppDispatcher.dispatch(action);

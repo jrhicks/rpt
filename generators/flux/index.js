@@ -1,6 +1,6 @@
 const path = require('path');
 
-class Flux {
+class FluxGenerator {
 
   constructor({ gen, command, name, args }) {
     this.gen = gen;
@@ -48,7 +48,7 @@ class Flux {
   }
 
   componentName() {
-    return `${this.gen.inflect.camelize(this.name)}${this.gen.inflect.camelize(this.arg2)}`;
+    return `${this.gen.inflect.camelize(this.name)}${this.gen.inflect.camelize(this.args[0])}`;
   }
 
   pluralizeName() {
