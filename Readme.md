@@ -24,7 +24,7 @@ npm install
 
 npm run start
 
-npm g reactmdl
+rpt g reactmdl
 
 
 # Nested Routes
@@ -33,21 +33,21 @@ The primary nesting is
 
 WorkSpaces -> Tabs -> Views -> SubRoutes
 
-npm g workspace Project
+rpt g workspace Project
 
 ## Nested Routes To Be Developed Very Soon
 
-npm g Tab Project Milestones
+rpt g Tab Project Milestones
 
-npm g View Project Milestones ShowMilestone
+rpt g View Project Milestones ShowMilestone
 
-npm g View Project Milestones CreateMilestone
+rpt g View Project Milestones CreateMilestone
 
-npm g View Project Milestones EditMilestone
+rpt g View Project Milestones EditMilestone
 
-npm g View Project Milestones ListOpenMilestones
+rpt g View Project Milestones ListOpenMilestones
 
-npm g View Project Milestones ListClosedMilestones
+rpt g View Project Milestones ListClosedMilestones
 
 
 ## Develop
