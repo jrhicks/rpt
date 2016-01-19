@@ -94,6 +94,20 @@ var GenerateCore = function () {
     }
 
     /**
+     * Deep copy directory
+     *
+     * @param {code} code to append to bottom of file
+     * @param {dest} absolute path
+     */
+
+  }, {
+    key: 'append',
+    value: function append(code, dest) {
+      var job = 'append';
+      this.jobs.push({ job: job, code: code, dest: dest });
+    }
+
+    /**
      * Copy file from template to application
      * the answer(s) to the provided callback.
      *
@@ -278,11 +292,21 @@ var GenerateCore = function () {
       this.resolve(destPath, injectedContents);
     }
   }, {
-    key: 'aReplace',
-    value: function aReplace(_ref7) {
-      var expression = _ref7.expression;
-      var text = _ref7.text;
+    key: 'aAppend',
+    value: function aAppend(_ref7) {
+      var code = _ref7.code;
       var dest = _ref7.dest;
+
+      var destContents = fs.readFileSync(dest, 'utf8');
+      destContents = destContents + '\n' + code;
+      this.resolve(dest, destContents);
+    }
+  }, {
+    key: 'aReplace',
+    value: function aReplace(_ref8) {
+      var expression = _ref8.expression;
+      var text = _ref8.text;
+      var dest = _ref8.dest;
 
       var destContents = fs.readFileSync(dest, 'utf8');
       var injectedContents = destContents.replace(expression, text);
@@ -363,11 +387,14 @@ var GenerateCore = function () {
           case 'exec':
             this.aExec(j);
             break;
+          case 'append':
+            this.aAppend(j);
+            break;
           case 'inject':
             this.aInject(j);
             break;
           default:
-            console.log('Unrecognized job.');
+            console.log('Unrecognized job: \'' + j + '\'');
             break;
         }
       }

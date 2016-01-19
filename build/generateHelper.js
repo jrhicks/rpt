@@ -15,10 +15,11 @@ function generateHelper(generatorCommand, name, args, options, searchProjectGene
   var _generatorCommand$spl2 = _slicedToArray(_generatorCommand$spl, 2);
 
   var generator = _generatorCommand$spl2[0];
-  var command = _generatorCommand$spl2[1];
+  var cmd = _generatorCommand$spl2[1];
+
+  var command = cmd.toLowerCase();
 
   // Determine what generator to run
-
   var generatorPath = null;
 
   if (options) {

@@ -26,6 +26,13 @@ npm run start
 
 rpt g reactmdl
 
+## Using Flux
+
+rpt g alt
+
+rpt g alt:action MyAction
+
+rpt g alt:store MyStore
 
 # Nested Routes
 

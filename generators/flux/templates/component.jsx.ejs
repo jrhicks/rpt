@@ -1,0 +1,29 @@
+import React from 'react';
+import { <%=ctx.camelizeName()%>Store } from '../stores';
+import { Container } from 'flux/utils';
+
+class <%=ctx.componentName()%> extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = <%=ctx.componentName()%>.calculateState();
+  }
+
+  static getStores() {
+    return [<%=ctx.camelizeName()%>Store];
+  }
+
+  static calculateState() {
+    return {
+    };
+  }
+
+  render() {
+    return (
+        <p><%=ctx.componentName()%></p>
+    );
+  }
+
+}
+
+module.exports = Container.create(<%=ctx.componentName()%>, { pure: false });
