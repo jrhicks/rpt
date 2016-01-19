@@ -28,11 +28,13 @@ rpt g reactmdl
 
 ## Using Flux
 
-rpt g alt
+rpt g flux
 
-rpt g alt:action MyAction
+rpt g flux:action Foo
 
-rpt g alt:store MyStore
+rpt g flux:store Foo
+
+rpt g flux:component Foo
 
 # Nested Routes
 
