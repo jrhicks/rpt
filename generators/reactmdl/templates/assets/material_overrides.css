@@ -28,6 +28,10 @@
   }
 }
 
+.mdl-layout__header {
+  height: 56px;
+}
+
 /* CUSTOM */
 
 .mdl-layout__header--no_drawer {
@@ -35,7 +39,9 @@
 }
 
 .mdl-layout__content-container {
-  padding: 0 20px 0 20px;
+  padding: 0px 20px 0 20px;
+  margin-top: 56px;
+  z-index: 1000;
 }
 
 .mdl-layout__drawer-title {
