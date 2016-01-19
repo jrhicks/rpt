@@ -2,17 +2,19 @@
 
 Write and use generators that live in your project's repository.
 
-## Gettings Started
+## Installing RPT
 
-git clone https://github.com/jrhicks/rpt.git
+You must clone the repo and link the npm package instead of installing directly from npm.
 
-cd rpt
+* git clone https://github.com/jrhicks/rpt.git
 
-npm install
+* cd rpt
 
-npm link
+* npm install
 
-cd ..
+* npm link
+
+## Using
 
 rpt new MyCoolApp
 
