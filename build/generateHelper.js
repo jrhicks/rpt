@@ -17,7 +17,7 @@ function generateHelper(generatorCommand, name, args, options, searchProjectGene
   var generator = _generatorCommand$spl2[0];
   var cmd = _generatorCommand$spl2[1];
 
-  var command = cmd.toLowerCase();
+  var command = ('' + cmd).toLowerCase();
 
   // Determine what generator to run
   var generatorPath = null;

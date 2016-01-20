@@ -6,7 +6,7 @@ const findRoot = require('find-root');
 function generateHelper(generatorCommand, name, args, options, searchProjectGenerators) {
   // Setup GeneratorCore
   const [generator, cmd] = generatorCommand.split(':');
-  const command = cmd.toLowerCase();
+  const command = `${cmd}`.toLowerCase();
 
   // Determine what generator to run
   let generatorPath = null;

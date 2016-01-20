@@ -6,14 +6,14 @@ class <%=ctx.componentName()%> extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = <%=ctx.componentName()%>.calculateState();
+    this.state = <%=ctx.componentName()%>.calculateState({}, props);
   }
 
   static getStores() {
     return [<%=ctx.camelizeName()%>Store];
   }
 
-  static calculateState() {
+  static calculateState(x, props) {
     return {
     };
   }
@@ -26,4 +26,4 @@ class <%=ctx.componentName()%> extends React.Component {
 
 }
 
-module.exports = Container.create(<%=ctx.componentName()%>, { pure: false });
+module.exports = Container.create(<%=ctx.componentName()%>, { pure: false, withProps: true });

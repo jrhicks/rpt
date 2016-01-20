@@ -19,6 +19,7 @@ class ContentHeader extends React.Component {
     let headerClasses = [
       'mdl-layout',
       'mdl-layout__header',
+      'mdl-layout__header--scroll',
       'mdl-layout__header--content',
       'mdl-layout__header--transparent'
     ];
