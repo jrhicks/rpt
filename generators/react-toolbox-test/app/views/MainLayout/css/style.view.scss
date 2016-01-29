@@ -1,0 +1,80 @@
+@import "./config";
+
+.header {
+  background-color: #999;
+  display: flex;
+  height: $appbar-height;
+  align-items: center;
+  padding: 0 $appbar-h-padding;
+  color: $appbar-contrast;
+}
+
+.iconButton {
+
+}
+
+.root {
+  display: block;
+  max-height: 100%;
+  flex-grow: 1;
+  padding-bottom: 4 * $unit;
+  overflow-y: auto;
+  font-size: $font-size-normal;
+  color: $color-text;
+
+  > *:not(pre) {
+    margin: $workspace-v-offset $workspace-h-offset;
+  }
+
+  h1 {
+    font-size: $workspace-h1-size;
+  }
+
+  h2 {
+    font-size: $workspace-h2-size;
+  }
+
+  h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: $font-weight-bold;
+  }
+
+  h1, h2 {
+    padding-top: $workspace-v-offset;
+    color: $color-primary-dark;
+  }
+
+  p {
+    font-size: inherit;
+    line-height: 1.5;
+    a {
+      color: $color-text;
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    margin-left: 7 * $unit;
+
+    -webkit-font-smoothing: antialiased;
+            font-smoothing: antialiased;
+    > li {
+      margin-bottom: $unit;
+    }
+  }
+
+  table {
+    width: auto;
+    font-size: $workspace-table-font-size;
+    thead th {
+      -webkit-font-smoothing: antialiased;
+              font-smoothing: antialiased;
+    }
+    th, td {
+      padding: $unit;
+
+      -webkit-font-smoothing: antialiased;
+              font-smoothing: antialiased;
+    }
+  }
+}

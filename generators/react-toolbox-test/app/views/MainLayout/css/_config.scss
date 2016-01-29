@@ -1,0 +1,38 @@
+@import "../../globals";
+
+$appbar-height: 4.4 * $unit;
+$appbar-h-padding: 0.5 * $unit;
+$appbar-logo-size: 3.6 * $unit;
+$appbar-shadow: 0 1px rgba(255,255,255,.65);
+$appbar-navigation-offset: 6.5 * $unit;
+$appbar-color: $color-primary-dark !default;
+$appbar-contrast: $color-primary-contrast !default;
+$appbar-title-total-distance: 8 * $unit;
+$appbar-title-distance: $appbar-title-total-distance - $appbar-h-padding;
+$appdrawer-color: #f6f6f6;
+
+$tabbar-color: #eee;
+$tabbar-height: 4.4 * $unit;
+$tabbar-contrast: #666;
+
+$workspace-left-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+$workspace-right-shadow: -2px 0 4px rgba(0,0,0,.14);
+$workspace-left-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+$workspace-right-shadow: -2px 0 4px rgba(0,0,0,.14);
+
+$workspace-h1-size: 3.4 * $unit;
+$workspace-h2-size: 2.4 * $unit;
+$workspace-h-offset: 4 * $unit;
+$workspace-v-offset: ($workspace-h-offset / 2);
+$workspace-code-background: rgba(0, 0, 0, .05);
+$workspace-playground-button-height: 3 * $unit;
+$workspace-playground-button-font-size: 1.2 * $unit;
+$workspace-table-font-size: 1.4 * $unit;
+
+
+$appdrawer-width: 18 * $unit;
+$appdrawer-h-padding: 1.6 * $unit;
+$appdrawer-v-padding: 0.0 * $unit;
+$appdrawer-footer-border: solid 1px rgb(224, 224, 224);
+
+$playground-width: 50%;

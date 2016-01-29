@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 'use strict';
 
+require("babel-polyfill");
 var program = require('commander');
 var pkg = require('../package.json');
 var generateHelper = require('./generateHelper');

@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+require("babel-polyfill");
 const program = require('commander');
 const pkg = require('../package.json');
 const generateHelper = require('./generateHelper');

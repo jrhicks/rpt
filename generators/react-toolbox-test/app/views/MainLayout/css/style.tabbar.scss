@@ -1,0 +1,79 @@
+@import "./config";
+
+.root {
+  display: flex;
+  height: $appbar-height;
+  align-items: center;
+  padding: 0 $appbar-h-padding;
+  color: $tabbar-contrast;
+  background: $tabbar-color;
+
+  &:not(.flat) {
+    z-index: $z-index-high;
+    box-shadow: 0 2px 5px rgba(0,0,0,.26);
+  }
+
+  a {
+    color: $tabbar-contrast;
+  }
+}
+
+.appbar {
+  z-index: $z-index-higher;
+  display: flex;
+  min-height: $appbar-height;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: $color-primary-dark;
+  box-shadow: $appbar-shadow;
+}
+
+.icon {
+  line-height: $appbar-height;
+}
+
+.title {
+  line-height: $appbar-height;
+}
+
+.logo {
+  width: $appbar-logo-size;
+  height: $appbar-logo-size;
+  margin-top: ($appbar-height - $appbar-logo-size) / 2;
+  fill: $color-primary-contrast;
+}
+
+.navigation {
+  flex-grow: 1;
+  text-align: left;
+  > ul {
+    margin-left: 0;
+    list-style: none;
+    > li:hover {
+      cursor: pointer;
+      background-color: #ddd;
+    }
+    > li {
+      display: inline-block;
+      > a {
+        @include typo-menu;
+        position: relative;
+        display: inline-block;
+        padding: 0 $unit 0 $unit;
+        line-height: $tabbar-height;
+        color: $tabbar-contrast;
+        &.active:after {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: block;
+          width: 100%;
+          height: .3 * $unit;
+          content: '';
+          background-color: $color-accent;
+        }
+      }
+    }
+  }
+}

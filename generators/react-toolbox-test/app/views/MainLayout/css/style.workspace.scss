@@ -1,0 +1,21 @@
+@import "./config";
+
+.workspace {
+  position: fixed;
+  top: $appbar-height + $tabbar-height;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: $z-index-normal;
+  transition: padding $animation-duration $animation-curve-default;
+}
+
+.noTabBar {
+  top: $appbar-height;
+}
+
+.drawerOpen {
+  padding-right: 0;
+  padding-left: $appdrawer-width;
+}

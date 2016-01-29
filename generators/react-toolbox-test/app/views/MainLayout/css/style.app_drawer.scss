@@ -1,0 +1,58 @@
+@import "./config";
+
+.root {
+  display: flex;
+  width: $appdrawer-width;
+  flex-direction: column;
+  background-color: $appdrawer-color;
+
+  position: fixed;
+  top: $appbar-height + $tabbar-height;
+  bottom: 0;
+  left: 0;
+  z-index: $z-index-high;
+  box-shadow: $workspace-left-shadow;
+  transition: transform $animation-duration $animation-curve-default;
+}
+
+.noTabBar {
+  top: $appbar-height;
+}
+
+.drawerClosed {
+  transform: translateX(- 100%);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.list {
+  @include no-webkit-scrollbar;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.item {
+  padding: $appdrawer-v-padding $appdrawer-h-padding;
+  > span > span {
+    font-size: $font-size-small;
+    font-weight: $font-weight-semi-bold;
+  }
+}
+
+.active {
+  background: $color-divider;
+}
+
+.footer {
+  flex-grow: 0;
+  padding: $appdrawer-h-padding;
+  overflow: hidden;
+  font-size: $font-size-small;
+  color: $color-text-secondary;
+  border-top: $appdrawer-footer-border;
+  > * {
+    display: block;
+  }
+}
