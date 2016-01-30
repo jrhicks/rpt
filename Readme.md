@@ -4,15 +4,7 @@ Write and use generators that live in your project's repository.
 
 ## Installing RPT
 
-You must clone the repo and link the npm package instead of installing directly from npm.
-
-* git clone https://github.com/jrhicks/rpt.git
-
-* cd rpt
-
-* npm install
-
-* npm link
+* npm install rpt -g
 
 ## Using
 
@@ -23,8 +15,6 @@ cd MyCoolApp
 npm install
 
 npm run start
-
-rpt g reactmdl
 
 ## Using Flux
 

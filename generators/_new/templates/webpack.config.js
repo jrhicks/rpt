@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -27,10 +28,21 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?outputStyle=expanded&sourceMap')
+      }
     ]
   },
 
   plugins: [
+    new ExtractTextPlugin('app.css', {
+        allChunks: true
+    }),
     new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
   ]
 
