@@ -1,6 +1,6 @@
 {
   "name": "rpt",
-  "version": "0.0.77",
+  "version": "0.0.78",
   "description": "React Project Tools - Use, tweak, and create code generators in your project's repo.",
   "bin": {
     "rpt": "build/index.js"
