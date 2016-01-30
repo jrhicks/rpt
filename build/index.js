@@ -10,7 +10,8 @@ var register = require('babel-core/register');
 // require code not in node_modules with babel stage=0
 register({
   presets: ['es2015', 'stage-0'],
-  ignore: false
+  ignore: false,
+  only: /generators/
 });
 
 console.log('React Project Tools');
