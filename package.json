@@ -6,7 +6,7 @@
     "rpt": "build/index.js"
   },
   "scripts": {
-    "build": "babel src --out-dir build"
+    "build": "babel-cli src --out-dir build"
   },
   "repository": {
     "type": "git",
