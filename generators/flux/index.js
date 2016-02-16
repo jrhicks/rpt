@@ -12,6 +12,7 @@ class FluxGenerator {
   run() {
     const gen = this.gen;
     const root = this.gen.findRoot();
+
     switch (this.command) {
       case 'component':
         gen.template('component.jsx.ejs',
@@ -19,23 +20,23 @@ class FluxGenerator {
         break;
       case 'action':
         gen.template('action.js.ejs',
-          path.join(root, 'app', 'actions', `${this.camelizeName()}Actions.js`));
+          path.join(root, 'client', 'actions', `${this.camelizeName()}Actions.js`));
         gen.append(`export ${this.camelizeName()}Actions from './${this.camelizeName()}Actions';`,
-           path.join(root, 'app', 'actions', 'index.js'));
+           path.join(root, 'client', 'actions', 'index.js'));
         break;
       case 'store':
         gen.template('store.js.ejs',
-           path.join(root, 'app', 'stores', `${this.camelizeName()}Store.js`));
+           path.join(root, 'client', 'stores', `${this.camelizeName()}Store.js`));
         gen.append(`export ${this.camelizeName()}Store from './${this.camelizeName()}Store';`,
-           path.join(root, 'app', 'stores', 'index.js'));
+           path.join(root, 'client', 'stores', 'index.js'));
         break;
-      case '':
+      case 'scaffold':
         gen.template('index.js',
-          path.join(root, 'app', 'stores'));
+          path.join(root, 'client', 'stores', 'index.js'));
         gen.template('index.js',
-          path.join(root, 'app', 'actions'));
+          path.join(root, 'client', 'actions', 'index.js'));
         gen.template('AppDispatcher.js',
-          path.join(root, 'app', 'AppDispatcher.js'));
+          path.join(root, 'client', 'AppDispatcher.js'));
         break;
       default:
         console.log(`Command '${this.command}' not recognized.`);
@@ -48,6 +49,7 @@ class FluxGenerator {
   }
 
   componentName() {
+
     return `${this.gen.inflect.camelize(this.name)}${this.gen.inflect.camelize(this.args[0])}`;
   }
 

@@ -10,13 +10,15 @@ class RouteGenerator {
   run() {
     const gen = this.gen;
     const cwd = process.cwd();
-    const routeFolderName = this.camelizeName();
+    const routeFolderName = `_${this.camelizeName()}`;
     gen.template('index.js.ejs',
-      path.join(cwd, 'routes', routeFolderName, 'index.js'));
+      path.join(cwd, routeFolderName, 'index.js'));
     gen.template('Component.jsx.ejs',
-      path.join(cwd, 'routes', routeFolderName, 'components', `${this.camelizeName()}.jsx`));
+      path.join(cwd, routeFolderName, `${this.camelizeName()}.jsx`));
+    gen.template('Component.scss.ejs',
+      path.join(cwd, routeFolderName, `${this.camelizeName()}.scss`));
     gen.replace('childRoutes: [',
-                `childRoutes: [\n    require('./routes/${this.camelizeName()}'),`,
+                `childRoutes: [\n    require('./_${this.camelizeName()}'),`,
                 path.join(cwd, 'index.js'));
   }
 

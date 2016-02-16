@@ -17,7 +17,8 @@
     "history": "^1.17.0",
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
-    "react-router": "^1.0.3"
+    "react-router": "^1.0.3",
+    "lorem-ipsum": "^1.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
@@ -31,11 +32,16 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^3.1.0",
     "eslint-plugin-react": "^3.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
+    "node-sass": "^3.4.2",
     "open-browser-webpack-plugin": "0.0.2",
+    "postcss-loader": "^0.8.0",
+    "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
+    "toolbox-loader": "0.0.3",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9",
+    "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.0"
   }
 }
