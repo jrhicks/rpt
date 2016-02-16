@@ -1,9 +1,0 @@
-import alt from '../alt';
-
-class <%=ctx.camelizeName()%>Actions {
-  update<%=ctx.camelizeName()%>(<%=ctx.lowerCamelizeName()%>) {
-    return <%=ctx.lowerCamelizeName()%>;
-  }
-}
-
-module.exports = alt.createActions(<%=ctx.camelizeName()%>Actions);
