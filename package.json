@@ -1,7 +1,7 @@
 {
   "name": "rpt",
-  "version": "0.0.76",
-  "description": "React Project Tools - Use, tweak, and create code generators in your project's repo.",
+  "version": "0.0.83",
+  "description": "React Project Tools - Use, tweak, and create code generators with ES2015 in your project's repo.",
   "bin": {
     "rpt": "build/index.js"
   },
@@ -14,8 +14,8 @@
   },
   "keywords": [
     "Generate",
-    "CLI",
-    "babel-core",
+    "ES2015",
+    "babel-register",
     "react"
   ],
   "author": "Jeffrey Hicks",
@@ -47,6 +47,7 @@
     "text-table": "^0.2.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.4.5",
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.14.0"
   }

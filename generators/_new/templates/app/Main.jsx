@@ -1,14 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
-require('file?name=[name].[ext]!./index.html');
+import rootRoute from './index';
 
-const rootRoute = {
-  component: 'div',
-  childRoutes: [
-    require('./views')
-  ]
-};
+require('file?name=[name].[ext]!./index.html');
 
 ReactDOM.render(
   <Router history={browserHistory} routes={rootRoute} />,

@@ -12,7 +12,13 @@ class NewGenerator {
   run() {
     const cwd = process.cwd();
 
-    this.gen.dir('base', path.join(cwd, this.name));
+    this.gen.dir('app', path.join(cwd, this.name, 'app'));
+
+    this.gen.template('package.json',
+                  path.join(cwd, this.name, 'package.json'));
+
+    this.gen.file('webpack.config.js',
+                  path.join(cwd, this.name, 'webpack.config.js'));
 
     this.gen.file('.eslintignore',
                   path.join(cwd, this.name, '.eslintignore'));
@@ -23,8 +29,6 @@ class NewGenerator {
     this.gen.file('.eslintrc',
                   path.join(cwd, this.name, '.eslintrc'));
 
-    this.gen.template('Dashboard.jsx.ejs',
-                  path.join(cwd, this.name, 'app', 'routes', 'Dashboard', 'components', 'Dashboard.jsx'));
   }
 
   titleizeName() {

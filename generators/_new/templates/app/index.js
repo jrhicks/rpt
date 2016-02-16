@@ -1,6 +1,6 @@
 module.exports = {
   component: 'div',
   childRoutes: [
-    require('./routes/Dashboard')
+    require('./views/_Dashboard')
   ]
 };

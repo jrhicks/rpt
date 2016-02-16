@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import style from './Dashboard.scss'
 
 class App extends React.Component {
 
@@ -10,8 +11,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>App</h1>
+      <div className={style.root}>
+        <h1>Dashboard</h1>
         <hr />
         {this.props.children}
       </div>
