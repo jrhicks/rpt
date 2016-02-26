@@ -26,7 +26,7 @@ function generateHelper(generatorCommand, name, args, options, searchProjectGene
     // TODO
   }
 
-  if (generatorCommand === null) {
+  if (generatorCommand === null || generatorCommand === '' || generatorCommand === undefined) {
     console.log('  Generator not specified.  Exiting');
     process.exit(0);
   }
@@ -72,6 +72,7 @@ function generateHelper(generatorCommand, name, args, options, searchProjectGene
   gen.makeReady(gObj);
   gObj.run();
   gen.finish();
+  return gObj;
 }
 
 module.exports = generateHelper;

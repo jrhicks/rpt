@@ -1,10 +1,11 @@
 #! /usr/bin/env node
 
 require("babel-polyfill");
-const program = require('commander');
-const pkg = require('../package.json');
-const generateHelper = require('./generateHelper');
-const register = require('babel-core/register');
+import program from 'commander';
+import pkg from '../package.json';
+import generateHelper from './generateHelper';
+import register from 'babel-core/register';
+import fs from 'fs';
 
 // require code not in node_modules with babel stage=0
 register({
@@ -13,14 +14,13 @@ register({
   only: /generators/,
 });
 
-
 console.log('React Project Tools');
 console.log('  rpt (c) 2016 @jrhicks - MIT LICENSE');
 console.log('  conflicter et al (c) Google - BSD LICENSE');
 
 function generate(generatorCommand, name, args, options) {
   const searchProjectGenerators = true;
-  generateHelper(generatorCommand, name, args, options, searchProjectGenerators);
+  return generateHelper(generatorCommand, name, args, options, searchProjectGenerators);
 }
 
 function createNew(name) {
@@ -28,7 +28,32 @@ function createNew(name) {
   const args = {};
   const options = [];
   const searchProjectGenerators = false;
-  generateHelper(generatorCommand, name, args, options, searchProjectGenerators);
+  return generateHelper(generatorCommand, name, args, options, searchProjectGenerators);
+}
+
+function wiki(file) {
+  const originalContents = fs.readFileSync(file).toString();
+  let contents = fs.readFileSync(file).toString();
+  const reg = RegExp(/\[\[(.*?)\]\]/);
+  let result;
+  result = reg.exec(contents);
+  while (result) {
+    const markup = result[0];
+    const command = result[1];
+    const [generatorCommand, name, ...args] = command.split(' ');
+    const searchProjectGenerators = true;
+    const options = {};
+    const gObj = generateHelper(generatorCommand, name, args, options, searchProjectGenerators);
+    const componentName = gObj.componentName();
+    const componentCode = `<${componentName} />`;
+    const importStatement = `import ${componentName} from './${componentName}.jsx';`;
+    contents = importStatement + '\n' + contents;
+    contents = contents.replace(markup, componentCode);
+    result = reg.exec(contents);
+  }
+  if (originalContents !== contents) {
+    fs.writeFileSync(file, contents);
+  }
 }
 
 program
@@ -43,5 +68,11 @@ program
   .command('new [App]')
   .description('Create a new react App')
   .action(createNew);
+
+program
+  .version(pkg.version)
+  .command('w [file]')
+  .description('Execute experimental WikiComponents')
+  .action(wiki);
 
 program.parse(process.argv);
