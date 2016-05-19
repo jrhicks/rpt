@@ -11,7 +11,7 @@ import fs from 'fs';
 register({
   presets: ['es2015', 'stage-0'],
   ignore: false,
-  only: /generators/,
+  only: [/generators/, /models/],
 });
 
 console.log('React Project Tools');
