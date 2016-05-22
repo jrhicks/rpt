@@ -31,7 +31,7 @@ require("babel-polyfill");
 (0, _register2.default)({
   presets: ['es2015', 'stage-0'],
   ignore: false,
-  only: [/generators/, /models/]
+  only: [/generators/, /models/, /clients/, /oims/]
 });
 
 console.log('React Project Tools');
